@@ -10,6 +10,18 @@ import (
 	"github.com/whatsauth/whatsauth"
 )
 
+func RunWS(roomId string, PublicKey string, usertables []whatsauth.LoginInfo, db *sql.DB) {
+	if roomId[0:1] == "v" {
+		phonenumber := watoken.DecodeGetId(PublicKey, roomId)
+		if phonenumber != "" {
+			infologin := whatsauth.GetLoginInfofromPhoneNumber(phonenumber, usertables, db)
+			infologin.Uuid = roomId
+			fmt.Println(infologin)
+			whatsauth.SendStructTo(roomId, infologin)
+		}
+	}
+}
+
 func RunModule(req whatsauth.WhatsauthRequest, usertables []whatsauth.LoginInfo, db *sql.DB) atmodel.NotifButton {
 	var content string
 	delay := req.Delay
