@@ -22,8 +22,10 @@ func RunWS(roomId string, PublicKey string, usertables []whatsauth.LoginInfo, db
 	}
 }
 
-func RunModule(req whatsauth.WhatsauthRequest, usertables []whatsauth.LoginInfo, db *sql.DB) atmodel.NotifButton {
+func RunModule(req whatsauth.WhatsauthRequest, PrivateKey string, usertables []whatsauth.LoginInfo, db *sql.DB) atmodel.NotifButton {
+	header := "WhatsAuth Single Sign On"
 	var content string
+	footer := fmt.Sprintf("Aplikasi : %v", watoken.GetAppSubDomain(req.Uuid))
 	delay := req.Delay
 	if whatsauth.GetUsernamefromPhonenumber(req.Phonenumber, usertables, db) != "" {
 		infologin := whatsauth.GetLoginInfofromPhoneNumber(req.Phonenumber, usertables, db)
@@ -31,15 +33,24 @@ func RunModule(req whatsauth.WhatsauthRequest, usertables []whatsauth.LoginInfo,
 		fmt.Println(infologin)
 		status := whatsauth.SendStructTo(req.Uuid, infologin)
 		if status {
-			content = fmt.Sprintf("Hai kak , login aplikasi sukses, silahkan kakak melihat kembali ke aplikasi. Waktu scan %v detik.", delay)
+			content = fmt.Sprintf("Hai kak , login aplikasi *sukses*,\nsilahkan kakak kembali ke aplikasi.\nLama kakak kirim pesan di atas : %v detik.", delay)
 		} else {
-			content = fmt.Sprintf("Maaf kak login gagal. Kemungkinan qr code tidak valid atau qr code nya sudah expire kak. Silahkan scan ulang kembali ya kak. Atau kakak terlalu lama mengirim kodenya, kakak butuh waktu %v detik untuk mengirim kode authentikasi ini. Semoga selanjutnya bisa lebih cekatan ya kak. Semangat kak.", delay)
+			if req.Uuid[0:1] == "m" {
+				content = fmt.Sprintf("%v detik menunggu kakak mengirim pesan diatas.\nSelanjutnya kakak *buka Magic Link* di bawah ini ya kak, link berlaku selama 30 detik.", delay)
+				tokenstring, err := watoken.EncodeforSeconds(req.Phonenumber, PrivateKey, 30)
+				if err != nil {
+					fmt.Println("simpati RunModule : ", err)
+				}
+				urlakses := watoken.GetAppUrl(req.Uuid) + "?uuid=" + tokenstring
+				footer = fmt.Sprintf("Magic Link : %v", urlakses)
+			} else {
+				content = fmt.Sprintf("Maaf kak *login gagal*.\nKemungkinan qr code tidak valid atau qr code nya sudah expire kak, silahkan scan ulang kembali ya kak.\nKakak butuh waktu %v detik untuk mengirim pesan diatas. Semoga selanjutnya bisa lebih cekatan ya kak. Semangat kak.", delay)
+			}
+
 		}
 	} else {
 		content = fmt.Sprintf("Hai kak , Nomor whatsapp ini *tidak terdaftar* di sistem kami, silahkan silahkan gunakan nomor yang terdftar ya kak. Waktu scan %v detik.", delay)
 	}
-	header := "WhatsAuth Single Sign On"
-	footer := fmt.Sprintf("Login Aplikasi : %v", watoken.GetAppUrl(req.Uuid))
 	btm := GenerateButtonMessage(header, content, footer)
 	var notifbtn atmodel.NotifButton
 	notifbtn.User = req.Phonenumber
