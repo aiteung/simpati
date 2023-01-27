@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/whatsauth/wasocket"
 	"github.com/whatsauth/watoken"
 
 	"github.com/aiteung/atmodel"
@@ -17,7 +18,7 @@ func RunWS(roomId string, PublicKey string, usertables []whatsauth.LoginInfo, db
 			infologin := whatsauth.GetLoginInfofromPhoneNumber(phonenumber, usertables, db)
 			infologin.Uuid = roomId
 			fmt.Println(infologin)
-			whatsauth.SendStructTo(roomId, infologin)
+			wasocket.SendStructTo(roomId, infologin)
 		}
 	}
 }
@@ -31,7 +32,7 @@ func RunModule(req whatsauth.WhatsauthRequest, PrivateKey string, usertables []w
 		infologin := whatsauth.GetLoginInfofromPhoneNumber(req.Phonenumber, usertables, db)
 		infologin.Uuid = req.Uuid
 		fmt.Println(infologin)
-		status := whatsauth.SendStructTo(req.Uuid, infologin)
+		status := wasocket.SendStructTo(req.Uuid, infologin)
 		if status {
 			content = fmt.Sprintf("Hai kak , login aplikasi *sukses*,\nsilahkan kakak kembali ke aplikasi.\nLama kakak kirim pesan di atas : %v detik.", delay)
 		} else {
