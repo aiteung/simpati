@@ -31,6 +31,7 @@ func RunModule(req whatsauth.WhatsauthRequest, PrivateKey string, usertables []w
 	if whatsauth.GetUsernamefromPhonenumber(req.Phonenumber, usertables, db) != "" {
 		infologin := whatsauth.GetLoginInfofromPhoneNumber(req.Phonenumber, usertables, db)
 		infologin.Uuid = req.Uuid
+		infologin.Login, _ = watoken.Encode(infologin.Username, PrivateKey)
 		fmt.Println(infologin)
 		status := wasocket.SendStructTo(req.Uuid, infologin)
 		if status {

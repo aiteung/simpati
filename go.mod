@@ -12,7 +12,6 @@ require (
 	github.com/fasthttp/websocket v1.5.0 // indirect
 	github.com/gofiber/fiber/v2 v2.41.0 // indirect
 	github.com/gofiber/websocket/v2 v2.1.3 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
@@ -27,7 +26,7 @@ require (
 require (
 	aidanwoods.dev/go-paseto v1.2.0 // indirect
 	github.com/aiteung/atmodel v0.0.1
-	github.com/whatsauth/whatsauth v0.0.10
+	github.com/whatsauth/whatsauth v0.1.1
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/sys v0.2.0 // indirect
 )
