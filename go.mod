@@ -3,9 +3,11 @@ module github.com/aiteung/simpati
 go 1.19
 
 require (
+	github.com/aiteung/atmessage v0.0.2
 	github.com/aiteung/musik v0.0.5
 	github.com/whatsauth/wasocket v0.0.4
 	github.com/whatsauth/watoken v0.1.0
+	go.mau.fi/whatsmeow v0.0.0-20230306190159-5caded34a872
 )
 
 require (
@@ -25,7 +27,6 @@ require (
 	github.com/valyala/fasthttp v1.44.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.mau.fi/libsignal v0.1.0 // indirect
-	go.mau.fi/whatsmeow v0.0.0-20230306190159-5caded34a872 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
