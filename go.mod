@@ -1,6 +1,6 @@
 module github.com/aiteung/simpati
 
-go 1.19
+go 1.20
 
 require (
 	github.com/aiteung/atmessage v0.0.2
