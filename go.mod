@@ -34,8 +34,6 @@ require (
 	github.com/valyala/fasthttp v1.45.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.mau.fi/libsignal v0.1.0 // indirect
-	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/tools v0.4.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 )
 
