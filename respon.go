@@ -60,6 +60,6 @@ func RunModuleResponse(waclient *whatsmeow.Client, Info *types.MessageInfo, Mess
 		fmt.Println(kodedosen)
 		jadwalkuliah := GetJadwalKuliah(kodedosen, db)
 		fmt.Println(jadwalkuliah)
-		SendListMessageJadwalKuliah(waclient, Info, kodedosen, jadwalkuliah)
+		SendMessageJadwalKuliah(waclient, Info, kodedosen, jadwalkuliah)
 	}
 }

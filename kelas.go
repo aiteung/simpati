@@ -12,6 +12,22 @@ import (
 	"go.mau.fi/whatsmeow/types"
 )
 
+func SendMessageJadwalKuliah(waclient *whatsmeow.Client, Info *types.MessageInfo, kodedosen string, jadwalngajar []JadwalKuliah) {
+	lmsg := fmt.Sprintf("*Info Mengajar %v*\n", kodedosen)
+	lmsg = lmsg + showInfoPertemuan(jadwalngajar) + "\n"
+	lmsg = lmsg + showInfoJadwal(jadwalngajar) + "\n"
+	lmsg = lmsg + "*Info Jadwal dan Set Nama Group*\n"
+	var listrow string
+	for _, mkjd := range jadwalngajar {
+		jdwl := mkjd.Nama + "\n"
+		jdwl = jdwl + musik.KelasNumberToAbjad(mkjd.NamaKelas) + " | " + musik.NumberStringToHari(mkjd.HariID) + " | " + mkjd.JamMulai + "-" + mkjd.JamSelesai + " | " + mkjd.RuangID + "\n"
+		jdwl = jdwl + "respon|changegroupname|" + mkjd.JadwalID + "-" + musik.KelasNumberToAbjad(mkjd.NamaKelas) + "-" + mkjd.Nama + "\n"
+		listrow = listrow + jdwl
+	}
+	lmsg = lmsg + "\n" + listrow
+	atmessage.SendMessage(lmsg, Info.Chat, waclient)
+}
+
 func SendListMessageJadwalKuliah(waclient *whatsmeow.Client, Info *types.MessageInfo, kodedosen string, jadwalngajar []JadwalKuliah) {
 	var lmsg atmessage.ListMessage
 	lmsg.Title = fmt.Sprintf("Info Mengajar %v", kodedosen)
